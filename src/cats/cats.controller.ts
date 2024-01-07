@@ -4,6 +4,7 @@ import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Cat } from './interfaces/cat.interface';
 
 @ApiTags('Cats')
 @UseGuards(RolesGuard)
@@ -12,7 +13,7 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create cat' })
+  @ApiOperation({ summary: 'Create a cat' })
   create(@Body() createCatDto: CreateCatDto) {
     return this.catsService.create(createCatDto);
   }
@@ -24,20 +25,20 @@ export class CatsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Find one cat' })
+  @ApiOperation({ summary: 'Find one cat with id' })
   findOne(@Param('id') id: string) {
-    return this.catsService.findOne(+id);
+    return this.catsService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a cat' })
-  update(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto) {
-    return this.catsService.update(+id, updateCatDto);
+  update(@Param('id') id: string, @Body() updateCatDto: Partial<Cat>) {
+    return this.catsService.update(id, updateCatDto);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a cat' })
+  @ApiOperation({ summary: 'Delete a cat with id' })
   remove(@Param('id') id: string) {
-    return this.catsService.remove(+id);
+    return this.catsService.delete(id);
   }
 }

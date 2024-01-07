@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
+import { Cat } from './interfaces/cat.interface';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class CatsService {
-  create(createCatDto: CreateCatDto) {
-    return 'This action adds a new cat';
+  constructor(
+    @Inject('CAT_MODEL') private readonly catModel: Model<Cat>
+  ) {}
+  
+  
+  async findAll(): Promise<Cat[]> {
+    return this.catModel.find().exec();
   }
 
-  findAll() {
-    return `This action returns all cats`;
+  async findOne(id: string): Promise<Cat> {
+    // const objectId = new ObjectId(id);
+    return this.catModel.findOne({ where: { id: id } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cat`;
+  async create(createCatDto: CreateCatDto): Promise<Cat> {
+    return this.catModel.create(createCatDto);
   }
 
-  update(id: number, updateCatDto: UpdateCatDto) {
-    return `This action updates a #${id} cat`;
+  async update(id: string, user: Partial<Cat>): Promise<Cat> {
+    await this.catModel.updateOne({id}, user);
+    // const objectId = new ObjectId(id);
+    return this.catModel.findOne({where : {id: id}});
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cat`;
+  async delete(id: string): Promise<void> {
+    await this.catModel.deleteOne({id: id}).exec();
   }
 }
