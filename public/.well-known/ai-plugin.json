@@ -1,0 +1,17 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "Cat List",
+    "name_for_model": "cat_list",
+    "description_for_human": "Manage your Cat list. You can add, remove and view your cats.",
+    "description_for_model": "Plugin for managing a cat list, you can add, remove and view your cats.",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "/api-json"
+    },
+    "logo_url": "/logo.png",
+    "contact_email": "support@xiaohe.com",
+    "legal_info_url": "https://xiaohe.com/legal"
+}
